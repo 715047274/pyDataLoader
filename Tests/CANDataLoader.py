@@ -1,6 +1,6 @@
 # __author__ = 'kevinz'
 # import unittest
-from database import engine
+from Tests.DbSetUp.database import engine
 from datetime import datetime, timedelta, date
 from dateutil.rrule import *
 from dateutil.relativedelta import *
@@ -145,7 +145,7 @@ def _execInsertOutputId(tableName, columns, values, toprint=False):
     return id
 
 
-def _execInsert(tableName, columns, values, toprint=False):
+def _execInsert( tableName, columns, values, toprint=False):
     sql = "INSERT INTO {0} {1} {2}".format(tableName, columns, values)
     engine.execute(sql)
     if (toprint):
@@ -441,6 +441,8 @@ class TestPerformance(unittest.TestCase):
             engine.execute(text("{call PopulateOrgHierarchyTable(1,1)};"))
 
         def createLegalEntityEmploymentInsurance(legalentity_id):
+
+            # if the Country Code is Canada Setup the Employee Insurance rate
             # todo: set up LegalEntityEmployeeInsurance + LegalEntityEmployeeInsuranceRate
             legalentityemploymentinsurance_columns = "(LegalEntityId,ReferenceCode,ClientId,LastModifiedUserId,LastModifiedTimestamp,RateGroup,IsDefault,LegalEntityEmployeeInsurancePreferenceCodeId)"
             values_str = "VALUES('{3}','0001',{0},{1},{2},'0001',1,1)" \
@@ -487,12 +489,14 @@ class TestPerformance(unittest.TestCase):
                         legalentity_masterbankacct_name, legalentity_masterbankacct_name_long,
                         legalentity_masterbankacct_name_xrefcode, _start_date)
             legalentity_masterBankAcctCoulmns = "(LegalEntityId, ShortName, LongName, XrefCode, EffectiveStart, EffectiveEnd, isDefault, FundingIdentifier,TaxServiceId,ServiceUserNumber,ClientId,LastModifiedUserId,LastModifiedTimestamp, IsFasterPayment)"
-            legalentity_masterbankacct_id = _execInsertOutputId("LegalEntityMasterBankAccountSetting", legalentity_masterBankAcctCoulmns, values_str)
+            legalentity_masterbankacct_id = _execInsertOutputId("LegalEntityMasterBankAccountSetting", legalentity_masterBankAcctCoulmns, values_str, True)
 
+
+            legalentity_bankAcctColumns = "(ShortName, LongName, IsApproved, EffectiveStart, EffectiveEnd, ApprovedOn, ClientId, LastModifiedUserId, LastModifiedTimeStamp, CVDApproved, CVDApprovedOn, FOSApprovalState, FOSApprovalFileSentOn, FOSApprovedOn, NumberOfFOSCVDTransmitTries, LegalEntityMasterBankAccountSettingId)"
             values_str = "VALUES('{3}','{4}',1,'{5}',NULL,NULL,{0},{1},{2},0,NULL,NULL,NULL,NULL,NULL,{6})" \
                 .format(_client_id, _last_mod_userId, _last_mod_timestamp, legalentity_bankacctdefname,
                         legalentity_bankacctdefname_long, _start_date, legalentity_masterbankacct_id)
-            legalentity_bankacctdef_id = _execInsertOutputId("LegalEntityBankAccountDef", "", values_str)
+            legalentity_bankacctdef_id = _execInsertOutputId("LegalEntityBankAccountDef", legalentity_bankAcctColumns, values_str, True)
 
             legalentitybankaccount_columns = "(PRBankAccountTypeId,PRBankAccountId,ClientId,LastModifiedUserId,LastModifiedTimestamp,LegalEntityBankAccountDefId," \
                                              "CheckPrinting,CheckSigning,BankTransferDisbursementSourceId,CheckDisbursementSourceId," \

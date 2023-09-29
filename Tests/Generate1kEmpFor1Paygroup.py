@@ -24,15 +24,13 @@
 #      select * from employeeemploymentstatus where employeeid=1015
 #      select * from employeeworkassignment where employeeid=1015#
 
-import unittest
-from database import engine
+from Tests.DbSetUp.database import engine
     #as db
 from datetime import datetime,timedelta,date
 from dateutil.rrule import *
 from dateutil.relativedelta import *
 #from ddt import ddt, data
 from itertools import cycle
-from sqlalchemy.sql import text
 import unittest
 import holidays
 

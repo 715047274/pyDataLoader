@@ -1,0 +1,33 @@
+{
+  "testName": "",
+  "testId": "uuid",
+  "legalEntity":
+    {
+      "legalEntityName": "",
+      "countryCode": "CAN"
+    },
+  "OrgUnit":
+    {
+      "corpOrg": {
+        "orgName": "",
+        "address": ""
+      },
+      "siteOrg":{
+        "orgName": "",
+         "address": ""
+      } ,
+      "onSiteOrg": {
+        "orgName": "",
+        "address": ""
+      }
+    },
+  "department": {"name":  "", "jobName": ""},
+  "payGroup": [
+    {
+      "payGroupName": "", "PayFrequency": "","payStartRef": ""
+    }
+  ],
+  "employees": [
+    {}
+  ]
+}
