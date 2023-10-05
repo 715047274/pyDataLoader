@@ -649,7 +649,7 @@ class TestPerformance(unittest.TestCase):
                                    " SELECT MAX(newPunch.{3}Id), MIN(ou.OrgUnitId),{0},{1},{2}" \
                                    " FROM {3} newPunch, OrgUnit ou WHERE newPunch.ShortName like '{4}%' and ou.OrgLevelId=0" \
                 .format(_client_id, _last_mod_userId, _last_mod_timestamp, policyName, _country_code)
-            _execSql(policyassignment_sql, "{0}Assignment".format(policyName))
+            _execSql(policyassignment_sql, "{0}Assignment".format(policyName), True)
 
         def generatePunchPolicy():
             punchpolicy_name = "{1}PunchPolicy{0}".format(_uniqueId, _country_code)
@@ -691,7 +691,7 @@ class TestPerformance(unittest.TestCase):
                 .format(_client_id, _last_mod_userId, _last_mod_timestamp, punchpolicy_name, punchpolicy_name_long,
                         punchpolicy_name_xrefcode, creation_orgunit_id)
 
-            _execSql(punchpolicy_sql, "PunchPolicy")
+            _execSql(punchpolicy_sql, "PunchPolicy", True)
 
             policyAssignment("PunchPolicy")
 
@@ -705,7 +705,7 @@ class TestPerformance(unittest.TestCase):
                 .format(_client_id, _last_mod_userId, _last_mod_timestamp, payholidaygroup_name,
                         payholidaygroup_name_long, payholidaygroup_name_xrefcode, creation_orgunit_id)
 
-            _execSql(payholidaygroup_sql, "PayHolidayGroup")
+            _execSql(payholidaygroup_sql, "PayHolidayGroup", True)
 
             policyAssignment("PayHolidayGroup")
 
@@ -735,7 +735,7 @@ class TestPerformance(unittest.TestCase):
                 .format(_client_id, _last_mod_userId, _last_mod_timestamp, _start_date,
                         employeeschedulepolicy_name, employeeschedulepolicy_name_long,
                         employeeschedulepolicy_name_xrefcode)
-            _execSql(employeeschedulepolicy_sql, "EmployeeSchedulePolicy")
+            _execSql(employeeschedulepolicy_sql, "EmployeeSchedulePolicy", True)
 
         def generatePayPolicy():
             print("payPolicy")
@@ -747,7 +747,7 @@ class TestPerformance(unittest.TestCase):
                             " VALUES({6},'{3}','{4}','{5}',{0},{1},{2},0,0,0,0,0,1,0,0,NULL,NULL,0)" \
                 .format(_client_id, _last_mod_userId, _last_mod_timestamp, paypolicy_name, paypolicy_name_long,
                         paypolicy_name_xrefcode, creation_orgunit_id)
-            _execSql(paypolicy_sql, "PayPolicy")
+            _execSql(paypolicy_sql, "PayPolicy", True)
 
         def generateEntitlementPolicy():
             # print("entitleMentPolicy")
@@ -762,7 +762,7 @@ class TestPerformance(unittest.TestCase):
                                     " VALUES('{4}','{5}','{3}', NULL,{0},{1},{2},'{6}')" \
                 .format(_client_id, _last_mod_userId, _last_mod_timestamp, _start_date,
                         entitlementpolicy_name, entitlementpolicy_name_long, entitlementpolicy_name_xrefcode)
-            _execSql(entitlementpolicy_sql, "EntitlementPolicy")
+            _execSql(entitlementpolicy_sql, "EntitlementPolicy",True)
 
         def enableAutoPay():
             hourly_nonexempt_paytype_id = getPayTypeId('Hourly(Non-Exempt)')
