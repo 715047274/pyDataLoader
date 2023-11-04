@@ -1,6 +1,6 @@
 # __author__ = 'kevinz'
 # import unittest
-from Tests.DbSetUp.database import engine
+from .DbSetUp.database import engine
 from datetime import datetime, timedelta, date
 from dateutil.rrule import *
 from dateutil.relativedelta import *
@@ -537,12 +537,12 @@ class TestPerformance(unittest.TestCase):
             _country_code)
         creation_orgunit_id = engine.execute(sql_str).fetchone().id
 
-        # def getAllPREarningTypes():
-        #     sql = "SELECT PREarningTypeId as id FROM PREarningType"
-        #     rows = engine.execute(sql).fetchall()
-        #     # values = ','.join(rows)
-        #     values = [str(x.id) for x in rows]
-        #     return ','.join(values)
+        def getAllPREarningTypes():
+            sql = "SELECT PREarningTypeId as id FROM PREarningType"
+            rows = engine.execute(sql).fetchall()
+            # values = ','.join(rows)
+            values = [str(x.id) for x in rows]
+            return ','.join(values)
 
         def generateJob():
             # todo 2. create job
@@ -645,11 +645,21 @@ class TestPerformance(unittest.TestCase):
             return prpayrollpolicyrule_id
 
         def policyAssignment(policyName):
+            '''
+            MAX orgUnit will be latest create OrgUnit Corp
+            MIN orgUnit will be the Corp
+            :param policyName:
+            :return:
+            '''
             policyassignment_sql = "INSERT INTO {3}Assignment" \
                                    " SELECT MAX(newPunch.{3}Id), MIN(ou.OrgUnitId),{0},{1},{2}" \
                                    " FROM {3} newPunch, OrgUnit ou WHERE newPunch.ShortName like '{4}%' and ou.OrgLevelId=0" \
                 .format(_client_id, _last_mod_userId, _last_mod_timestamp, policyName, _country_code)
-            _execSql(policyassignment_sql, "{0}Assignment".format(policyName), True)
+            print(policyassignment_sql)
+            '''
+                Error to display the recent inserted PunchPolicyAssignment
+            '''
+            _execSql(policyassignment_sql, "{0}Assignment".format(policyName), False)
 
         def generatePunchPolicy():
             punchpolicy_name = "{1}PunchPolicy{0}".format(_uniqueId, _country_code)
@@ -795,8 +805,8 @@ class TestPerformance(unittest.TestCase):
         generatePayPolicy()
 
         policy_id = createPRPayrollPolicy()
-        # createPRPayrollPolicyRuleSet(policy_id)
-        # generatePRPayrollRules()
+        createPRPayrollPolicyRuleSet(policy_id)
+        generatePRPayrollRules()
 
         enableAutoPay()
 
@@ -1211,7 +1221,7 @@ class TestPerformance(unittest.TestCase):
                             pay_policy_id, normal_weekly_hour, base_rate, paygroup_id, base_salary,
                             employee_xrefcode, pr_payroll_policy_id, pay_holiday_group_id, entitlement_policy_id, time_off_policy_id,
                             employee_schedule_policy_id, normal_semimonthly_hour)
-                _execSql(employeeemploymentstatus_sql, "EmployeeEmploymentStatus")
+                _execSql(employeeemploymentstatus_sql, "EmployeeEmploymentStatus", True)
 
                 employeeworkassignment_sql = "INSERT INTO EmployeeWorkAssignment" \
                                              " (EmployeeId,DeptJobId,OrgUnitId,IsPrimary,EffectiveStart,ClientId,LastModifiedUserId,LastModifiedTimestamp," \
@@ -1220,7 +1230,7 @@ class TestPerformance(unittest.TestCase):
                                              "{7},0,0,'',1,0,0)" \
                     .format(_client_id, _last_mod_userId, _last_mod_timestamp, employee_id, dept_job_id,
                             onsite_orgunit_id, _start_date, is_virtual)
-                _execSql(employeeworkassignment_sql, "EmployeeWorkAssignment")
+                _execSql(employeeworkassignment_sql, "EmployeeWorkAssignment", True)
 
                 personaddress_sql = "INSERT INTO PersonAddress" \
                                     "(PersonId,CountryCode,Address1,City,StateCode,PostalCode,ContactInformationTypeId,EffectiveStart," \
@@ -1229,7 +1239,7 @@ class TestPerformance(unittest.TestCase):
                     .format(_client_id, _last_mod_userId, _last_mod_timestamp, employee_id, _country_code,
                             live_address['Address'], live_address['City'],
                             live_address['Province'], live_address['Postal Code'], _start_date, contactinfotype_id)
-                _execSql(personaddress_sql, "PersonAddress")
+                _execSql(personaddress_sql, "PersonAddress", True)
 
 
             print("Total elapsed time [{0}] to generate {1} employees".format(str(time.time() - t0), num))
