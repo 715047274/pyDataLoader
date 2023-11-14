@@ -24,7 +24,7 @@
 #      select * from employeeemploymentstatus where employeeid=1015
 #      select * from employeeworkassignment where employeeid=1015#
 
-from Tests.DbSetUp.database import engine
+from TestsLegacy.DbSetUp.database import engine
     #as db
 from datetime import datetime,timedelta,date
 from dateutil.rrule import *

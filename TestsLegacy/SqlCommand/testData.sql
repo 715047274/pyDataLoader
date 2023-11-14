@@ -1,4 +1,4 @@
-
+-- test Create legal Entity
 DECLARE @name NVARCHAR(100) = 'test',
 		@country NVARCHAR(100) = 'USA',
 		@lId INT,

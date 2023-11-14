@@ -159,7 +159,7 @@ _num_employees_list = [1] #25000, 50000, 75000, ]
 _id_paygroup_list = ['150K'] #25K, '50K', '', '']
 _num_depts = 1
 _num_paygroups = len(_num_employees_list)
-_num_paygroup_sites = 100
+_num_paygroup_sites = 1
 
 _client_id = 10000
 
@@ -277,7 +277,7 @@ class TestPerformance(unittest.TestCase):
                     geocity_id = _getColumnValue("GeoCity", "GeoCityId",
                                                  "ShortName = '{0}' and GeoStateId = {1} and ClientId={2}"
                                                  .format(address_list[y][x]['City'], geostate_id, _client_id))
-                    _printSqlWithId(geocity_sql, geocity_id)
+                   # _printSqlWithId(geocity_sql, geocity_id)
 
         def createEarning(name, xrefcode, codename):
             # do not create if the earning code already exists
